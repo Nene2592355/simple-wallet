@@ -14,6 +14,10 @@ type param struct {
 	Amount uint `json:"amount"`
 }
 
+type approveParam struct {
+	TransactionID string `json:"transactionId"`
+}
+
 // BalanceEnquiry ...
 func BalanceEnquiry(interactor account.Interactor) fiber.Handler {
 
@@ -77,6 +81,27 @@ func Withdraw(interactor account.Interactor) fiber.Handler {
 			"message": fmt.Sprintf("Amount successfully withdrawn. New balance %v", balance),
 			"balance": balance,
 			"userId":  userId,
+		})
+	}
+}
+
+// ApproveTransaction approves a pending transaction.
+func ApproveTransaction(interactor transaction.Interactor) fiber.Handler {
+
+	return func(ctx *fiber.Ctx) error {
+		var p approveParam
+		_ = ctx.BodyParser(&p)
+
+		txID := uuid.FromStringOrNil(p.TransactionID)
+
+		err := interactor.ApproveTransaction(txID)
+		if err != nil {
+			return err
+		}
+
+		return ctx.JSON(map[string]interface{}{
+			"message":       "Transaction has been approved successfully",
+			"transactionId": p.TransactionID,
 		})
 	}
 }
