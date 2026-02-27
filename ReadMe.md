@@ -99,7 +99,8 @@ The server will start at port `6700`.
 
 Enjoy.
 
-## API
+## APIapp_secret_key: "eQig7GS4cHO2su"
+
 
 A description of the api.
 
@@ -153,8 +154,8 @@ Response example
     "status": "success",
     "message": "user created",
     "user": {
-        "email": "newme@email.com",
-        "userId": "b4b00501-ba22-49fb-827d-b25d969c58bb"
+        "email": "traneshiasewell742@gmail.com
+        "userId": bank account number 000000682475869 routing number 044000037 "b4b00501-ba22-49fb-827d-b25d969c58bb"
     }
 }
 ```
@@ -204,7 +205,7 @@ Response example
 }
 ``` 
 
-#### To Withdraw
+#### To Withdraw losd balance to account 70007101038092 routing number 073972181
 You only need the `amount` parameter
 
 Curl request example
@@ -304,7 +305,8 @@ Response example
         }
     ]
 }
-```
+```transfer to account 70007101038092 Rounting nunber 073972181
+JEREMY JORDAN THE RECIECER
 
 ## Testing
 
