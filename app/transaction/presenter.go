@@ -15,6 +15,7 @@ func parseToTransaction(newTx data.TransactionContract) *models.Transaction {
 	return &models.Transaction{
 		ID:        id,
 		Type:      newTx.TxType,
+		Status:    models.TxStatusPending,
 		Timestamp: time.Now(),
 		Amount:    newTx.Amount,
 		UserID:    newTx.UserID,
