@@ -36,7 +36,5 @@ func apiRouteGroup(g fiber.Router, domain *registry.Domain, config app.Config) {
 	g.Post("/account/withdrawal", middleware.AuthByBearerToken(config.Secret), account_handlers.Withdraw(domain.Account))
 	g.Post("/account/withdraw", middleware.AuthByBearerToken(config.Secret), account_handlers.Withdraw(domain.Account))
 
-	g.Post("/account/approve", middleware.AuthByBearerToken(config.Secret), account_handlers.ApproveTransaction(domain.Transaction))
-
 	g.Get("/account/statement", middleware.AuthByBearerToken(config.Secret), account_handlers.MiniStatement(domain.Transaction))
 }

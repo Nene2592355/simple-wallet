@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"simple-wallet/app/account"
-	"simple-wallet/app/errors"
 	"simple-wallet/app/transaction"
 
 	"github.com/gofiber/fiber/v2"
@@ -13,10 +12,6 @@ import (
 
 type param struct {
 	Amount uint `json:"amount"`
-}
-
-type approveParam struct {
-	TransactionID string `json:"transactionId"`
 }
 
 // BalanceEnquiry ...
@@ -82,31 +77,6 @@ func Withdraw(interactor account.Interactor) fiber.Handler {
 			"message": fmt.Sprintf("Amount successfully withdrawn. New balance %v", balance),
 			"balance": balance,
 			"userId":  userId,
-		})
-	}
-}
-
-// ApproveTransaction approves a pending transaction.
-func ApproveTransaction(interactor transaction.Interactor) fiber.Handler {
-
-	return func(ctx *fiber.Ctx) error {
-		var p approveParam
-		if err := ctx.BodyParser(&p); err != nil {
-			return errors.Error{Code: errors.EINVALID, Message: errors.ErrorMessage("invalid request body")}
-		}
-
-		txID, err := uuid.FromString(p.TransactionID)
-		if err != nil {
-			return errors.Error{Code: errors.EINVALID, Message: errors.ErrorMessage("invalid transaction ID")}
-		}
-
-		if err := interactor.ApproveTransaction(txID); err != nil {
-			return err
-		}
-
-		return ctx.JSON(map[string]interface{}{
-			"message":       "Transaction has been approved successfully",
-			"transactionId": p.TransactionID,
 		})
 	}
 }
