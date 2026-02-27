@@ -13,6 +13,7 @@ import (
 
 type Interactor interface {
 	AddTransaction(models.Transaction) error
+	ApproveTransaction(txID uuid.UUID) error
 	GetStatement(userId uuid.UUID) (*[]models.Transaction, error)
 }
 
@@ -52,6 +53,27 @@ func (i interactor) GetStatement(userId uuid.UUID) (*[]models.Transaction, error
 	}
 
 	return transactions, nil
+}
+
+func (i interactor) ApproveTransaction(txID uuid.UUID) error {
+	tx, err := i.repository.GetByID(txID)
+	if err != nil {
+		return err
+	}
+
+	if tx.Status != models.TxStatusPending {
+		return errors.Error{
+			Code:    errors.EINVALID,
+			Message: errors.ErrorMessage("transaction is not in pending status"),
+		}
+	}
+
+	err = i.repository.UpdateStatus(txID, models.TxStatusApproved)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (i interactor) listenOnTransactions() {
