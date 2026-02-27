@@ -12,15 +12,9 @@ const (
 	TxTypeBalance    = "balance_enquiry"
 )
 
-const (
-	TxStatusPending  = "pending"
-	TxStatusApproved = "approved"
-)
-
 type Transaction struct {
 	ID        uuid.UUID `json:"transactionId"`
 	Type      string    `json:"transactionType"`
-	Status    string    `json:"status"`
 	Timestamp time.Time `json:"timestamp"`
 	Amount    float64   `json:"amount"`
 	UserID    uuid.UUID `json:"userId"`
