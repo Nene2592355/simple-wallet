@@ -48,6 +48,9 @@ func (r repository) UpdateStatus(id uuid.UUID, status string) error {
 	if err := result.Error; err != nil {
 		return errors.Error{Err: err, Code: errors.EINTERNAL}
 	}
+	if result.RowsAffected == 0 {
+		return errors.Error{Code: errors.ENOTFOUND, Message: errors.ErrorMessage("transaction not found")}
+	}
 	return nil
 }
 

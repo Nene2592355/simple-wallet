@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"simple-wallet/app/account"
+	"simple-wallet/app/errors"
 	"simple-wallet/app/transaction"
 
 	"github.com/gofiber/fiber/v2"
@@ -90,12 +91,16 @@ func ApproveTransaction(interactor transaction.Interactor) fiber.Handler {
 
 	return func(ctx *fiber.Ctx) error {
 		var p approveParam
-		_ = ctx.BodyParser(&p)
+		if err := ctx.BodyParser(&p); err != nil {
+			return errors.Error{Code: errors.EINVALID, Message: errors.ErrorMessage("invalid request body")}
+		}
 
-		txID := uuid.FromStringOrNil(p.TransactionID)
-
-		err := interactor.ApproveTransaction(txID)
+		txID, err := uuid.FromString(p.TransactionID)
 		if err != nil {
+			return errors.Error{Code: errors.EINVALID, Message: errors.ErrorMessage("invalid transaction ID")}
+		}
+
+		if err := interactor.ApproveTransaction(txID); err != nil {
 			return err
 		}
 
