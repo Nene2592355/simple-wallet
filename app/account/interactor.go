@@ -79,7 +79,7 @@ func (i interactor) GetBalance(userId uuid.UUID) (float64, error) {
 
 // Deposit credits a user's account with an amount
 func (i interactor) Deposit(userId uuid.UUID, amount uint) (float64, error) {
-	if amount < 10 {
+	if amount < minimumDepositAmount {
 		e := errors.ErrAmountBelowMinimum(minimumDepositAmount, errors.DepositAmountBelowMinimum)
 		return 0, errors.Error{Err: e}
 	}
